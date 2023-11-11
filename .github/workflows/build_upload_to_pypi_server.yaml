@@ -1,0 +1,32 @@
+name: Build and Upload Python Package
+
+on:
+  push:
+    branches: [ main ]
+    paths:
+      - 'path/to/your/package/**'
+      - 'setup.py'
+
+jobs:
+  build-and-upload:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2
+
+    - name: Set up Python
+      uses: actions/setup-python@v2
+      with:
+        python-version: '3.9'
+
+    - name: Build Package
+      run: |
+        python setup.py sdist bdist_wheel
+
+    - name: Upload Package to Private PyPI
+      run: |
+        curl -F "file=@dist/*" <http://localhost:8080>
+      env:
+        PYPI_SERVER: <http://localhost:8080>
+

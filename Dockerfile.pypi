@@ -1,0 +1,17 @@
+FROM python:3.9-slim
+
+# Install pypiserver
+RUN pip install pypiserver
+
+# Create a directory to store packages
+RUN mkdir /packages
+
+# Copy your Python packages into the container
+# Note: Ensure your packages are in the "packages" directory in your repository
+COPY packages/ /packages/
+
+# Expose the port pypiserver will run on
+EXPOSE 8080
+
+# Start pypiserver
+CMD ["pypi-server", "-p", "8080", "/packages"]

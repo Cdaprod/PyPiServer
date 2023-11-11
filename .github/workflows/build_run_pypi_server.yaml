@@ -1,0 +1,22 @@
+name: Build and Run Private PyPI Server
+
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  build_and_run_pypi:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2
+
+    - name: Build PyPI Server Docker Image
+      run: docker build -t my-pypi-server -f Dockerfile.pypi .
+
+    - name: Run PyPI Server Container
+      run: docker run -d -p 8080:8080 my-pypi-server
+
+    - name: Check if PyPI Server is running
+      run: curl <http://localhost:8080>
